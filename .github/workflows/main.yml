@@ -39,19 +39,30 @@ jobs:
         path: |
           ~/.buildozer
           ~/.android
-        key: android-sdk-${{ hashFiles('app/buildozer.spec') }}
+        key: android-sdk-${{ hashFiles('dr120r_kivy/app/buildozer.spec') }}
         restore-keys: android-sdk-
 
     - name: Build APK
       working-directory: dr120r_kivy/app
       run: |
-        buildozer android debug 2>&1 | tail -50
+        buildozer android debug 2>&1 | tail -80
       env:
         JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+
+    # ── Debug: หา APK ทุก path ──
+    - name: Find APK
+      if: always()
+      run: |
+        echo "=== ค้นหา APK ทั่วทั้ง repo ==="
+        find . -name "*.apk" 2>/dev/null && echo "---" || echo "ไม่พบ .apk เลย"
+        echo "=== bin/ folder ==="
+        ls -lh dr120r_kivy/app/bin/ 2>/dev/null || echo "ไม่มี bin/ folder"
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: DR-120R-APK
-        path: app/bin/*.apk
+        path: |
+          dr120r_kivy/app/bin/*.apk
+        if-no-files-found: error
         retention-days: 90
