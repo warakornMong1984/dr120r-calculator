@@ -23,6 +23,7 @@ android.accept_sdk_license = True
 android.archs = arm64-v8a
 android.presplash_color = #1a1a1a
 android.allow_backup = True
+android.release_artifact = apk    ← เพิ่มตรงนี้
 
 [buildozer]
 log_level = 2
