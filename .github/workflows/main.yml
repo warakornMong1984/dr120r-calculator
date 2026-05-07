@@ -45,7 +45,7 @@ jobs:
     - name: Build APK
       working-directory: dr120r_kivy/app
       run: |
-        buildozer android release 2>&1 | tail -80
+        yes | buildozer android release 2>&1 | tail -80
       env:
         JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
