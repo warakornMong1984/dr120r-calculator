@@ -1,0 +1,57 @@
+name: Build DR-120R APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install system deps
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y \
+          git zip unzip openjdk-17-jdk \
+          build-essential libssl-dev libffi-dev \
+          libltdl-dev autoconf libtool pkg-config \
+          zlib1g-dev libncurses5-dev
+
+    - name: Install buildozer & kivy
+      run: |
+        pip install --upgrade pip
+        pip install buildozer==1.5.0 cython==3.0.11 kivy==2.3.0
+
+    - name: Cache Android SDK
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.buildozer
+          ~/.android
+        key: android-sdk-${{ hashFiles('app/buildozer.spec') }}
+        restore-keys: android-sdk-
+
+    - name: Build APK
+      working-directory: app
+      run: |
+        buildozer android debug 2>&1 | tail -50
+      env:
+        JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: DR-120R-APK
+        path: app/bin/*.apk
+        retention-days: 90
