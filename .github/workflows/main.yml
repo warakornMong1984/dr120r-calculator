@@ -43,7 +43,7 @@ jobs:
         restore-keys: android-sdk-
 
     - name: Build APK
-      working-directory: app
+      working-directory: dr120r_kivy/app
       run: |
         buildozer android debug 2>&1 | tail -50
       env:
