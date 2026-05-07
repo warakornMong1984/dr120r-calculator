@@ -18,15 +18,9 @@ android.minapi = 21
 android.ndk = 25b
 android.ndk_api = 21
 android.sdk = 33
-
-# ── สำคัญ: ระบุ build-tools version ชัดเจน แก้ปัญหา aidl not found ──
 android.build_tools_version = 33.0.2
-
-# ยอมรับ license อัตโนมัติ
 android.accept_sdk_license = True
-
 android.archs = arm64-v8a
-
 android.presplash_color = #1a1a1a
 android.allow_backup = True
 
